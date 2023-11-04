@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Empleados>
+    <Empleado>
+        <DNI>2</DNI>
+        <Nombre>222</Nombre>
+        <Proyecto>
+            <Id>1</Id>
+            <Nombre>21</Nombre>
+            <Presupuesto>12</Presupuesto>
+        </Proyecto>
+    </Empleado>
+</Empleados>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Proyectos>
+    <Proyecto>
+        <Codigo>1</Codigo>
+        <Nombre>21</Nombre>
+        <Presupuesto>12</Presupuesto>
+        <Empleado>
+            <DNI>2</DNI>
+            <Nombre>222</Nombre>
+        </Empleado>
+        <Producto>
+            <Codigo>3</Codigo>
+            <Nombre>3</Nombre>
+            <Precio>3</Precio>
+        </Producto>
+    </Proyecto>
+</Proyectos>

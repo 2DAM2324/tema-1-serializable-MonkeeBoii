@@ -1,5 +1,8 @@
 package Modelo;
-public class Proveedor {
+
+import java.io.Serializable;
+
+public class Proveedor implements Serializable{
     
     private String codigoProveedor;
     private String nombreProveedor;

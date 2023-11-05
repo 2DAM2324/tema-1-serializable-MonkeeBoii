@@ -11,7 +11,6 @@ import Modelo.Producto;
 import Modelo.Proveedor;
 import Modelo.Proyecto;
 import Controlador.XMLGeneratorAndRead;
-import java.util.List;
 import javax.swing.JOptionPane;
 
 public class Ventana1 extends javax.swing.JFrame {
@@ -20,14 +19,18 @@ public class Ventana1 extends javax.swing.JFrame {
     
     public Ventana1() throws IOException, FileNotFoundException, ClassNotFoundException, NotSerializableException, SAXException {
         initComponents();
-        empleados = (ArrayList<Empleado>) generador.leerXMLDeEmpleados("empleados.xml");
+        empleados = (ArrayList<Empleado>) generador.leerXMLDeEmpleados("empleados.dat");
         generador.cargarDatosEnJTableEmpleados(empleados, jTable_Empleado);
-        proyectos = (ArrayList<Proyecto>) generador.leerXMLDeProyectos("proyectos.xml");
+        
+        proyectos = (ArrayList<Proyecto>) generador.leerXMLDeProyectos("proyectos.dat");
         generador.cargarDatosEnJTableProyectos(proyectos, jTable_Proyectos);
-        productos = (ArrayList<Producto>) generador.leerXMLDeProductos("Productos.xml");
+        
+        productos = (ArrayList<Producto>) generador.leerXMLDeProductos("Productos.dat");
         generador.cargarDatosEnJTableProductos(productos, jTable_Productos);
-        proveedor = (ArrayList<Proveedor>) generador.leerXMLDeProveedores("proveedores.xml");
+ 
+        proveedor = (ArrayList<Proveedor>) generador.leerXMLDeProveedores("proveedores.dat");
         generador.cargarDatosEnJTableProveedores(proveedor, jTable_Proveedores);
+
     }
    
     @SuppressWarnings("unchecked")
@@ -1087,8 +1090,8 @@ public class Ventana1 extends javax.swing.JFrame {
         if(pasaFiltro1 && pasaFiltro2){
             Producto producto = new Producto(col1, col2, col3);
             productos.add(producto);
-            generador.generarXMLParaProducto(productos, "Productos.xml");
-            productos = (ArrayList<Producto>) generador.leerXMLDeProductos("Productos.xml");
+            generador.generarXMLParaProducto(productos, "Productos.dat");
+            productos = (ArrayList<Producto>) generador.leerXMLDeProductos("Productos.dat");
             generador.cargarDatosEnJTableProductos(productos, jTable_Productos);
             generador.resetearCamposProducto(jTextField_codigo_Productos, jTextField_nombre_productos, jTextField_precio_productos);
         }
@@ -1107,8 +1110,8 @@ public class Ventana1 extends javax.swing.JFrame {
         pasaFiltroBorrar = generador.comprobarSiHayRelacionesEnELObjeto(generador.buscarObjetoEnArrayProducto(jTable_Productos.getValueAt(jTable_Productos.getSelectedRow(), 0).toString(), productos));
         if(pasaFiltroBorrar){
             generador.eliminarFilaSeleccionadaProducto(jTable_Productos, productos);
-            generador.generarXMLParaProducto(productos, "Productos.xml");
-            productos = (ArrayList<Producto>) generador.leerXMLDeProductos("Productos.xml");
+            generador.generarXMLParaProducto(productos, "Productos.dat");
+            productos = (ArrayList<Producto>) generador.leerXMLDeProductos("Productos.dat");
             generador.cargarDatosEnJTableProductos(productos, jTable_Productos);
         }
     }//GEN-LAST:event_jButton_borrar_productosActionPerformed
@@ -1134,8 +1137,8 @@ public class Ventana1 extends javax.swing.JFrame {
                 if(pasaFiltro2){
                     productos.add(generador.modificarProductos(col1, col2, col3, jTable_Productos, productos));
                     generador.eliminarFilaSeleccionadaProducto(jTable_Productos, productos);
-                    generador.generarXMLParaProducto(productos, "Productos.xml");
-                    productos = (ArrayList<Producto>) generador.leerXMLDeProductos("Productos.xml");
+                    generador.generarXMLParaProducto(productos, "Productos.dat");
+                    productos = (ArrayList<Producto>) generador.leerXMLDeProductos("Productos.dat");
                     generador.cargarDatosEnJTableProductos(productos, jTable_Productos);
                     generador.resetearCamposProducto(jTextField_codigo_Productos, jTextField_nombre_productos, jTextField_precio_productos);
                 }
@@ -1143,16 +1146,16 @@ public class Ventana1 extends javax.swing.JFrame {
                 for(Proveedor pro : proveedor){
                     if(pro.getProductoProveedor().getCodigoProductos().equals(col1)){
                         pro.setProductoProveedor(generador.buscarObjetoEnArrayProducto(col1, productos));
-                        generador.generarXMLParaProveedor(proveedor, "proveedores.xml");
-                        proveedor = (ArrayList<Proveedor>) generador.leerXMLDeProveedores("proveedores.xml");
+                        generador.generarXMLParaProveedor(proveedor, "proveedores.dat");
+                        proveedor = (ArrayList<Proveedor>) generador.leerXMLDeProveedores("proveedores.dat");
                     }
                 }
                 
                 for(Proyecto pro : proyectos){
                     if(pro.getProductoProyecto().getCodigoProductos().equals(col1)){
                         pro.setProductoProyecto(generador.buscarObjetoEnArrayProducto(col1, productos));
-                        generador.generarXMLParaProyecto(proyectos, "Proyectos.xml");
-                        proyectos = (ArrayList<Proyecto>) generador.leerXMLDeProyectos("Proyectos.xml");
+                        generador.generarXMLParaProyecto(proyectos, "Proyectos.dat");
+                        proyectos = (ArrayList<Proyecto>) generador.leerXMLDeProyectos("Proyectos.dat");
                     }
                 }
             }
@@ -1172,8 +1175,8 @@ public class Ventana1 extends javax.swing.JFrame {
         pasaFiltroBorrar = generador.comprobarSiHayRelacionesEnELObjeto(generador.buscarObjetoEnArrayProyecto(jTable_Proyectos.getValueAt(jTable_Proyectos.getSelectedRow(), 0).toString(), proyectos));
         if(pasaFiltroBorrar){
             generador.eliminarFilaSeleccionadaProyecto(jTable_Proyectos, proyectos);
-            generador.generarXMLParaProyecto(proyectos, "Proyectos.xml");
-            proyectos = (ArrayList<Proyecto>) generador.leerXMLDeProyectos("Proyectos.xml");
+            generador.generarXMLParaProyecto(proyectos, "Proyectos.dat");
+            proyectos = (ArrayList<Proyecto>) generador.leerXMLDeProyectos("Proyectos.dat");
             generador.cargarDatosEnJTableProyectos(proyectos, jTable_Proyectos);
         }
     }//GEN-LAST:event_jButton_borrar_ProyectoActionPerformed
@@ -1206,8 +1209,8 @@ public class Ventana1 extends javax.swing.JFrame {
         if(pasaFiltro1 && pasaFiltro2){
             Proyecto proyecto = new Proyecto(col1, col2, col3);
             proyectos.add(proyecto);
-            generador.generarXMLParaProyecto(proyectos, "Proyectos.xml");
-            proyectos = (ArrayList<Proyecto>) generador.leerXMLDeProyectos("Proyectos.xml");
+            generador.generarXMLParaProyecto(proyectos, "Proyectos.dat");
+            proyectos = (ArrayList<Proyecto>) generador.leerXMLDeProyectos("Proyectos.dat");
             generador.cargarDatosEnJTableProyectos(proyectos, jTable_Proyectos);
             generador.resetearCamposProyecto(jTextField_Codigo_proyectos, jTextField_Nombre_Proyectos, jTextField_Presupuesto_Proyecto);
         }
@@ -1236,8 +1239,8 @@ public class Ventana1 extends javax.swing.JFrame {
                 if(pasaFiltro2){
                     proyectos.add(generador.modificarProyecto(col1, col2, col3, jTable_Proyectos, proyectos));
                     generador.eliminarFilaSeleccionadaProyecto(jTable_Proyectos, proyectos);
-                    generador.generarXMLParaProyecto(proyectos, "proyectos.xml");
-                    proyectos = (ArrayList<Proyecto>) generador.leerXMLDeProyectos("proyectos.xml");
+                    generador.generarXMLParaProyecto(proyectos, "proyectos.dat");
+                    proyectos = (ArrayList<Proyecto>) generador.leerXMLDeProyectos("proyectos.dat");
                     generador.cargarDatosEnJTableProyectos(proyectos, jTable_Proyectos);
                     generador.resetearCamposProyecto(jTextField_Codigo_proyectos, jTextField_Nombre_Proyectos, jTextField_Presupuesto_Proyecto);   
                     
@@ -1246,8 +1249,8 @@ public class Ventana1 extends javax.swing.JFrame {
                             if(pro.getId().equals(col1)){
                                 empl.eliminarProyecto(proyectoAntiguo, empl);
                                 empl.agregarProyecto(generador.buscarObjetoEnArrayProyecto(col1, proyectos));
-                                generador.generarXMLParaEmpleados(empleados, "empleados.xml");
-                                empleados = (ArrayList<Empleado>) generador.leerXMLDeEmpleados("empleados.xml");
+                                generador.generarXMLParaEmpleados(empleados, "empleados.dat");
+                                empleados = (ArrayList<Empleado>) generador.leerXMLDeEmpleados("empleados.dat");
                             }
                         }
                     }
@@ -1257,8 +1260,8 @@ public class Ventana1 extends javax.swing.JFrame {
                             if(proy.getId().equals(col1)){
                                 pro.eliminarProyecto(proyectoAntiguo, pro);
                                 pro.agregarProyecto(generador.buscarObjetoEnArrayProyecto(col1, proyectos));
-                                generador.generarXMLParaProducto(productos, "Productos.xml");
-                                productos = (ArrayList<Producto>) generador.leerXMLDeProductos("Productos.xml");
+                                generador.generarXMLParaProducto(productos, "Productos.dat");
+                                productos = (ArrayList<Producto>) generador.leerXMLDeProductos("Productos.dat");
                             }
                         }
                     }  
@@ -1300,8 +1303,8 @@ public class Ventana1 extends javax.swing.JFrame {
         if(pasaFiltroBorrar){
         
             generador.eliminarFilaSeleccionadaEmpleados(jTable_Empleado, empleados);
-            generador.generarXMLParaEmpleados(empleados, "empleados.xml");
-            empleados = (ArrayList<Empleado>) generador.leerXMLDeEmpleados("empleados.xml");
+            generador.generarXMLParaEmpleados(empleados, "empleados.dat");
+            empleados = (ArrayList<Empleado>) generador.leerXMLDeEmpleados("empleados.dat");
             generador.cargarDatosEnJTableEmpleados(empleados, jTable_Empleado);
         }
     }//GEN-LAST:event_jButton_borrar_EmpleadosActionPerformed
@@ -1335,14 +1338,14 @@ public class Ventana1 extends javax.swing.JFrame {
         col1 = jTextField_dni_Empleado.getText();
         col2 = jTextField_Nombre_Empleado.getText();
         
-        pasaFiltro1 = generador.comprobarSiElObjetoYaExisteEmpleado(empleados, col2);
+        pasaFiltro1 = generador.comprobarSiElObjetoYaExisteEmpleado(empleados, col1);
         pasaFiltro2 = generador.tieneAlgunAtributoVacio(col1, col2, null);
         
         if(pasaFiltro1 && pasaFiltro2){
             Empleado empleado = new Empleado(col1, col2);
             empleados.add(empleado);
-            generador.generarXMLParaEmpleados(empleados, "empleados.xml");
-            empleados = (ArrayList<Empleado>) generador.leerXMLDeEmpleados("empleados.xml");
+            generador.generarXMLParaEmpleados(empleados, "empleados.dat");
+            empleados = (ArrayList<Empleado>) generador.leerXMLDeEmpleados("empleados.dat");
             generador.cargarDatosEnJTableEmpleados(empleados, jTable_Empleado);
             generador.resetearCamposEmpleado(jTextField_dni_Empleado, jTextField_Nombre_Empleado);
         }
@@ -1369,8 +1372,8 @@ public class Ventana1 extends javax.swing.JFrame {
                 if(pasaFiltro2){
                     empleados.add(generador.modificarEmpleado(col1, col2, jTable_Empleado, empleados));
                     generador.eliminarFilaSeleccionadaEmpleados(jTable_Empleado, empleados);
-                    generador.generarXMLParaEmpleados(empleados, "empleados.xml");
-                    empleados = (ArrayList<Empleado>) generador.leerXMLDeEmpleados("empleados.xml");
+                    generador.generarXMLParaEmpleados(empleados, "empleados.dat");
+                    empleados = (ArrayList<Empleado>) generador.leerXMLDeEmpleados("empleados.dat");
                     generador.cargarDatosEnJTableEmpleados(empleados, jTable_Empleado); 
                     generador.resetearCamposEmpleado(jTextField_dni_Empleado, jTextField_Nombre_Empleado);
                 }
@@ -1380,8 +1383,8 @@ public class Ventana1 extends javax.swing.JFrame {
                         if(emp.getDNI().equals(col1)){
                             proy.eliminarProyectoDeProducto(empleadoAntiguo, proy);
                             proy.agregarProyecto(generador.buscarObjetoEnArrayEmpleado(col1, empleados));
-                            generador.generarXMLParaProyecto(proyectos, "Proyectos.xml");
-                            proyectos = (ArrayList<Proyecto>) generador.leerXMLDeProyectos("Proyectos.xml");
+                            generador.generarXMLParaProyecto(proyectos, "Proyectos.dat");
+                            proyectos = (ArrayList<Proyecto>) generador.leerXMLDeProyectos("Proyectos.dat");
                         }
                     }
                 }
@@ -1402,8 +1405,8 @@ public class Ventana1 extends javax.swing.JFrame {
         if(pasaFiltro1 && pasaFiltro2){
             Proveedor proveedores = new Proveedor(col1, col2);
             proveedor.add(proveedores);
-            generador.generarXMLParaProveedor(proveedor, "proveedores.xml");
-            proveedor = (ArrayList<Proveedor>) generador.leerXMLDeProveedores("proveedores.xml");
+            generador.generarXMLParaProveedor(proveedor, "proveedores.dat");
+            proveedor = (ArrayList<Proveedor>) generador.leerXMLDeProveedores("proveedores.dat");
             generador.cargarDatosEnJTableProveedores(proveedor, jTable_Proveedores);
             generador.resetearCamposProveedor(jTextField_codigo_Proveedor, jTextField_Nombre_proveedor);  
         }
@@ -1423,8 +1426,8 @@ public class Ventana1 extends javax.swing.JFrame {
         
         if(pasaFiltroBorrar){
             generador.eliminarFilaSeleccionadaProveedor(jTable_Proveedores, proveedor);
-            generador.generarXMLParaProveedor(proveedor, "proveedores.xml");
-            proveedor = (ArrayList<Proveedor>) generador.leerXMLDeProveedores("proveedores.xml");
+            generador.generarXMLParaProveedor(proveedor, "proveedores.dat");
+            proveedor = (ArrayList<Proveedor>) generador.leerXMLDeProveedores("proveedores.dat");
             generador.cargarDatosEnJTableProveedores(proveedor, jTable_Proveedores);
         }
     }//GEN-LAST:event_jButton_borrar_proveedorActionPerformed
@@ -1442,16 +1445,16 @@ public class Ventana1 extends javax.swing.JFrame {
                 if(pasaFiltro2){
                     proveedor.add(generador.modificarProveedores(col1, col2, jTable_Proveedores, proveedor));
                     generador.eliminarFilaSeleccionadaProveedor(jTable_Proveedores, proveedor);
-                    generador.generarXMLParaProveedor(proveedor, "proveedores.xml");
-                    proveedor = (ArrayList<Proveedor>) generador.leerXMLDeProveedores("proveedores.xml");
+                    generador.generarXMLParaProveedor(proveedor, "proveedores.dat");
+                    proveedor = (ArrayList<Proveedor>) generador.leerXMLDeProveedores("proveedores.dat");
                     generador.cargarDatosEnJTableProveedores(proveedor, jTable_Proveedores);
                     generador.resetearCamposProveedor(jTextField_codigo_Proveedor, jTextField_Nombre_proveedor);
                     
                     for(Producto producto : productos){
                         if(producto.getProveedorProducto().getCodigoProveedor().equals(col1)){
                             producto.setProveedorProducto(generador.buscarObjetoEnArrayProveedor(col1, proveedor));
-                            generador.generarXMLParaProducto(productos, "Productos.xml");
-                            productos = (ArrayList<Producto>) generador.leerXMLDeProductos("Productos.xml");
+                            generador.generarXMLParaProducto(productos, "Productos.dat");
+                            productos = (ArrayList<Producto>) generador.leerXMLDeProductos("Productos.dat");
                         }
                     }
                 }
@@ -1484,8 +1487,8 @@ public class Ventana1 extends javax.swing.JFrame {
             String dni = jTable_Empleado.getValueAt(filaSeleccionada, 0).toString();
             if(generador.buscarObjetoEnArrayEmpleado(dni, empleados) != null){
                 generador.anadirProyectoAEmpleado(generador.buscarObjetoEnArrayEmpleado(dni, empleados).getProyectosAsignados(), generador.buscarObjetoEnArrayProyecto(id, proyectos));
-                generador.generarXMLParaEmpleados(empleados, "empleados.xml");
-                empleados = (ArrayList<Empleado>) generador.leerXMLDeEmpleados("empleados.xml");
+                generador.generarXMLParaEmpleados(empleados, "empleados.dat");
+                empleados = (ArrayList<Empleado>) generador.leerXMLDeEmpleados("empleados.dat");
 
                 //carga los datos en la vista
                 generador.cargarDatosEnJTableEmpleados(empleados, jTable_Empleado);
@@ -1493,8 +1496,8 @@ public class Ventana1 extends javax.swing.JFrame {
             if(generador.buscarObjetoEnArrayProyecto(id, proyectos) != null){
             //Asigna el empleado al Proyecto
                 generador.anadirEmpleadoAProyecto(generador.buscarObjetoEnArrayProyecto(id, proyectos).getAsignacionesEmpleados(), generador.buscarObjetoEnArrayEmpleado(dni, empleados));
-                generador.generarXMLParaProyecto(proyectos, "Proyectos.xml");
-                proyectos = (ArrayList<Proyecto>) generador.leerXMLDeProyectos("Proyectos.xml");
+                generador.generarXMLParaProyecto(proyectos, "Proyectos.dat");
+                proyectos = (ArrayList<Proyecto>) generador.leerXMLDeProyectos("Proyectos.dat");
             }
             
         }else{
@@ -1514,14 +1517,14 @@ public class Ventana1 extends javax.swing.JFrame {
         if(filaSeleccionadaProyecto != -1 && filaSeleccionadaEmpleado != -1){
             if(generador.buscarObjetoEnArrayEmpleado(modeloEmpleado.getValueAt(filaSeleccionadaEmpleado, 0).toString(), empleados) != null){
                 generador.eliminarProyecto(generador.buscarObjetoEnArrayEmpleado(modeloEmpleado.getValueAt(filaSeleccionadaEmpleado, 0).toString(), empleados).getProyectosAsignados(), modeloProyecto.getValueAt(filaSeleccionadaProyecto, 0).toString());
-                generador.generarXMLParaEmpleados(empleados, "empleados.xml");
-                empleados = (ArrayList<Empleado>) generador.leerXMLDeEmpleados("empleados.xml");
+                generador.generarXMLParaEmpleados(empleados, "empleados.dat");
+                empleados = (ArrayList<Empleado>) generador.leerXMLDeEmpleados("empleados.dat");
                 generador.cargarDatosEnJTableEmpleados(empleados, jTable_Empleado);
                 String dni = jTable_Empleado.getValueAt(filaSeleccionadaEmpleado, 0).toString();
                 if(generador.buscarObjetoEnArrayProyecto(modeloProyecto.getValueAt(filaSeleccionadaProyecto, 0).toString(), proyectos) != null){
                     generador.eliminarEmpleadoEnProyecto(generador.buscarObjetoEnArrayProyecto(modeloProyecto.getValueAt(filaSeleccionadaProyecto, 0).toString(), proyectos).getAsignacionesEmpleados(), dni);
                     generador.cargarDatosEnJTableProyectos(generador.buscarObjetoEnArrayEmpleado(dni, empleados).getProyectosAsignados(), jTable_Proyectos_Empleados_Relacion);
-                    generador.generarXMLParaProyecto(proyectos, "Proyectos.xml");
+                    generador.generarXMLParaProyecto(proyectos, "Proyectos.dat");
                 }
             }
         }else{
@@ -1555,14 +1558,14 @@ public class Ventana1 extends javax.swing.JFrame {
 
             if(generador.buscarObjetoEnArrayProyecto(id, proyectos) != null && generador.buscarObjetoEnArrayProducto(codigo, productos) != null){
                 generador.anadirProductoAProyecto(generador.buscarObjetoEnArrayProyecto(id, proyectos), generador.buscarObjetoEnArrayProducto(codigo, productos));
-                generador.generarXMLParaProyecto(proyectos, "Proyectos.xml");
-                proyectos = (ArrayList<Proyecto>) generador.leerXMLDeProyectos("Proyectos.xml");
+                generador.generarXMLParaProyecto(proyectos, "Proyectos.dat");
+                proyectos = (ArrayList<Proyecto>) generador.leerXMLDeProyectos("Proyectos.dat");
             }
             
             if(generador.buscarObjetoEnArrayProyecto(id, proyectos) != null && generador.buscarObjetoEnArrayProducto(codigo, productos) != null){
                 generador.anadirProyectoAProducto(generador.buscarObjetoEnArrayProducto(codigo, productos).getProyectosProducto(), generador.buscarObjetoEnArrayProyecto(id, proyectos));
-                generador.generarXMLParaProducto(productos, "Productos.xml");
-                productos = (ArrayList<Producto>) generador.leerXMLDeProductos("Productos.xml");
+                generador.generarXMLParaProducto(productos, "Productos.dat");
+                productos = (ArrayList<Producto>) generador.leerXMLDeProductos("Productos.dat");
             }
         }
     }//GEN-LAST:event_jButton6ActionPerformed
@@ -1579,8 +1582,8 @@ public class Ventana1 extends javax.swing.JFrame {
             String id = jTable_Proyectos.getValueAt(filaSeleccionada, 0).toString();
             if(generador.buscarObjetoEnArrayProyecto(id, proyectos) != null && generador.buscarObjetoEnArrayEmpleado(dni, empleados) != null){
                 generador.anadirEmpleadoAProyecto(generador.buscarObjetoEnArrayProyecto(id, proyectos).getAsignacionesEmpleados(), generador.buscarObjetoEnArrayEmpleado(dni, empleados));
-                generador.generarXMLParaProyecto(proyectos, "Proyectos.xml");
-                proyectos = (ArrayList<Proyecto>) generador.leerXMLDeProyectos("Proyectos.xml");
+                generador.generarXMLParaProyecto(proyectos, "Proyectos.dat");
+                proyectos = (ArrayList<Proyecto>) generador.leerXMLDeProyectos("Proyectos.dat");
             }
             
             //carga los datos en la vista
@@ -1589,8 +1592,8 @@ public class Ventana1 extends javax.swing.JFrame {
             //Asigna el proyecto al empleado
             if(generador.buscarObjetoEnArrayEmpleado(dni, empleados) != null && generador.buscarObjetoEnArrayProyecto(id, proyectos) != null){
                 generador.anadirProyectoAEmpleado(generador.buscarObjetoEnArrayEmpleado(dni, empleados).getProyectosAsignados(), generador.buscarObjetoEnArrayProyecto(id, proyectos));
-                generador.generarXMLParaEmpleados(empleados, "empleados.xml");
-                empleados = (ArrayList<Empleado>) generador.leerXMLDeEmpleados("empleados.xml");
+                generador.generarXMLParaEmpleados(empleados, "empleados.dat");
+                empleados = (ArrayList<Empleado>) generador.leerXMLDeEmpleados("empleados.dat");
             }
             
         }else{
@@ -1614,8 +1617,8 @@ public class Ventana1 extends javax.swing.JFrame {
             
             if(generador.buscarObjetoEnArrayProyecto(modeloEmpleado.getValueAt(filaSeleccionadaEmpleado, 0).toString(), proyectos) != null){
                 generador.eliminarEmpleadoEnProyecto(generador.buscarObjetoEnArrayProyecto(modeloEmpleado.getValueAt(filaSeleccionadaEmpleado, 0).toString(), proyectos).getAsignacionesEmpleados(), modeloProyecto.getValueAt(filaSeleccionadaProyecto, 0).toString());            
-                generador.generarXMLParaProyecto(proyectos, "Proyectos.xml");
-                proyectos = (ArrayList<Proyecto>) generador.leerXMLDeProyectos("Proyectos.xml");
+                generador.generarXMLParaProyecto(proyectos, "Proyectos.dat");
+                proyectos = (ArrayList<Proyecto>) generador.leerXMLDeProyectos("Proyectos.dat");
                 generador.cargarDatosEnJTableProyectos(proyectos, jTable_Proyectos);
                 String dni = jTable_Proyectos.getValueAt(filaSeleccionadaEmpleado, 0).toString();
                 
@@ -1625,7 +1628,7 @@ public class Ventana1 extends javax.swing.JFrame {
                 if(generador.buscarObjetoEnArrayProyecto(dni, proyectos) != null){
                     generador.cargarDatosEnJTableEmpleados(generador.buscarObjetoEnArrayProyecto(dni, proyectos).getAsignacionesEmpleados(), tabla_relacion_proyecto_empleado);
                 }
-                generador.generarXMLParaEmpleados(empleados, "empleados.xml");
+                generador.generarXMLParaEmpleados(empleados, "empleados.dat");
             }
         }else{
             if(filaSeleccionadaProyecto == -1)
@@ -1654,8 +1657,8 @@ public class Ventana1 extends javax.swing.JFrame {
                     
                     generador.eliminarProductoEnProveedor(generador.buscarObjetoEnArrayProyecto(modeloEmpleado.getValueAt(filaSeleccionadaEmpleado, 0).toString(), proyectos).getProductoProyecto(), modeloProyecto.getValueAt(filaSeleccionadaProyecto, 0).toString());
 
-                    generador.generarXMLParaProyecto(proyectos, "Proyectos.xml");
-                    proyectos = (ArrayList<Proyecto>) generador.leerXMLDeProyectos("Proyectos.xml");
+                    generador.generarXMLParaProyecto(proyectos, "Proyectos.dat");
+                    proyectos = (ArrayList<Proyecto>) generador.leerXMLDeProyectos("Proyectos.dat");
                     generador.cargarDatosEnJTableProyectos(proyectos, jTable_Proyectos);
                     String dni = jTable_Proyectos.getValueAt(filaSeleccionadaEmpleado, 0).toString();
                     
@@ -1668,7 +1671,7 @@ public class Ventana1 extends javax.swing.JFrame {
                         producto1.add(generador.buscarObjetoEnArrayProyecto(dni, proyectos).getProductoProyecto());
                         generador.cargarDatosEnJTableProductos(producto1, tabla_producto_relacion);
                     }
-                    generador.generarXMLParaProducto(productos, "Productos.xml");
+                    generador.generarXMLParaProducto(productos, "Productos.dat");
                 }
             }
         }else{
@@ -1696,13 +1699,13 @@ public class Ventana1 extends javax.swing.JFrame {
                 if(generador.buscarObjetoEnArrayProducto(modeloProyecto.getValueAt(filaSeleccionadaProyecto, 0).toString(), productos).getProveedorProducto() != null && modeloProyecto.getValueAt(filaSeleccionadaProyecto, 0).toString() != null){
                     
                     generador.eliminarProductoEnProveedor(generador.buscarObjetoEnArrayProducto(modeloProyecto.getValueAt(filaSeleccionadaProyecto, 0).toString(), productos).getProveedorProducto(), modeloEmpleado.getValueAt(filaSeleccionadaEmpleado, 0).toString());
-                    generador.generarXMLParaProducto(productos, "Productos.xml");
-                    productos = (ArrayList<Producto>) generador.leerXMLDeProductos("Productos.xml");
+                    generador.generarXMLParaProducto(productos, "Productos.dat");
+                    productos = (ArrayList<Producto>) generador.leerXMLDeProductos("Productos.dat");
                 }
                 
                 if(generador.buscarObjetoEnArrayProveedor(modeloEmpleado.getValueAt(filaSeleccionadaEmpleado, 0).toString(), proveedor).getProductoProveedor() != null){
                     generador.eliminarProductoEnProveedor(generador.buscarObjetoEnArrayProveedor(modeloEmpleado.getValueAt(filaSeleccionadaEmpleado, 0).toString(), proveedor).getProductoProveedor(), modeloProyecto.getValueAt(filaSeleccionadaProyecto, 0).toString());
-                    generador.generarXMLParaProveedor(proveedor, "proveedores.xml");
+                    generador.generarXMLParaProveedor(proveedor, "proveedores.dat");
                     if(!generador.buscarObjetoEnArrayProveedor(modeloEmpleado.getValueAt(filaSeleccionadaEmpleado, 0).toString(), proveedor).getProductoProveedor().getCodigoProductos().isBlank()){
                         generador.cargarDatosEnJTableProductos(generador.buscarObjetoEnArrayProveedor(modeloEmpleado.getValueAt(filaSeleccionadaEmpleado, 0).toString(), proveedor).getProductoProveedor(), jTable_Productos1);
                     }else{
@@ -1732,16 +1735,16 @@ public class Ventana1 extends javax.swing.JFrame {
             
             if(generador.buscarObjetoEnArrayProveedor(id, proveedor) != null && generador.buscarObjetoEnArrayProducto(codigo, productos) != null){
                 generador.anadirProveedorAProducto(generador.buscarObjetoEnArrayProveedor(id, proveedor), generador.buscarObjetoEnArrayProducto(codigo, productos));
-                generador.generarXMLParaProveedor(proveedor, "proveedores.xml");
-                proveedor = (ArrayList<Proveedor>) generador.leerXMLDeProveedores("proveedores.xml");
+                generador.generarXMLParaProveedor(proveedor, "proveedores.dat");
+                proveedor = (ArrayList<Proveedor>) generador.leerXMLDeProveedores("proveedores.dat");
             }
             
             generador.cargarDatosEnJTableProveedores(proveedor, jTable_Proveedores);
             
             if(generador.buscarObjetoEnArrayProducto(codigo, productos) != null && generador.buscarObjetoEnArrayProveedor(id, proveedor) != null){
                 generador.anadirProveedorAProducto(generador.buscarObjetoEnArrayProducto(codigo, productos), generador.buscarObjetoEnArrayProveedor(id, proveedor));
-                generador.generarXMLParaProducto(productos, "Productos.xml");
-                productos = (ArrayList<Producto>) generador.leerXMLDeProductos("Productos.xml");
+                generador.generarXMLParaProducto(productos, "Productos.dat");
+                productos = (ArrayList<Producto>) generador.leerXMLDeProductos("Productos.dat");
             }
             
         }else{

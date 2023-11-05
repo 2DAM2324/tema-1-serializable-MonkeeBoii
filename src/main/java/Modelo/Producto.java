@@ -1,9 +1,10 @@
 package Modelo;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Producto {
+public class Producto implements Serializable {
     
     private String codigoProductos;
     private String nombreProductos;

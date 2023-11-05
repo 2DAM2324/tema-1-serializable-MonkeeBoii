@@ -1,12 +1,11 @@
 package Modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
-public class Proyecto {
+public class Proyecto implements Serializable{
     private String id;
     private String nombre;
     private String presupuesto;

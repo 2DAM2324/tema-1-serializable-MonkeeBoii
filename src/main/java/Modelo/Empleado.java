@@ -1,10 +1,12 @@
 package Modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Empleado {
+
+public class Empleado implements Serializable {
     private String dni;
     private String nombre;
     private ArrayList<Proyecto> proyectosAsignados;

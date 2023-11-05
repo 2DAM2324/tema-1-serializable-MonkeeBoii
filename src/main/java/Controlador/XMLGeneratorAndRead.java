@@ -11,10 +11,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JOptionPane;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -22,6 +18,15 @@ import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.DOMException;
 import org.xml.sax.SAXException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 public class XMLGeneratorAndRead{
     
@@ -29,138 +34,304 @@ public class XMLGeneratorAndRead{
     }
 
     public void generarXMLParaEmpleados(List<Empleado> empleados, String nombreArchivo) {
-        try (FileWriter writer = new FileWriter(nombreArchivo)) {
-            // Inicio del documento XML
-            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-            writer.write("<Empleados>\n");
+        try {
+            // Paso 1: Obtén una instancia de DocumentBuilderFactory
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+
+            // Paso 2: Crea un nuevo documento XML
+            Document document = builder.newDocument();
+
+            // Paso 3: Crea el elemento raíz
+            Element rootElement = document.createElement("Empleados");
+            document.appendChild(rootElement);
 
             // Itera sobre la lista de empleados
             for (Empleado empleado : empleados) {
-                writer.write("    <Empleado>\n");
-                writer.write("        <DNI>" + empleado.getDNI() + "</DNI>\n");
-                writer.write("        <Nombre>" + empleado.getNombre() + "</Nombre>\n");
+                Element empleadoElement = document.createElement("Empleado");
+                rootElement.appendChild(empleadoElement);
+
+                Element dniElement = document.createElement("DNI");
+                dniElement.appendChild(document.createTextNode(empleado.getDNI()));
+                empleadoElement.appendChild(dniElement);
+
+                Element nombreElement = document.createElement("Nombre");
+                nombreElement.appendChild(document.createTextNode(empleado.getNombre()));
+                empleadoElement.appendChild(nombreElement);
 
                 for (Proyecto proyecto : empleado.getProyectosAsignados()) {
-                    writer.write("        <Proyecto>\n");
-                    writer.write("            <Id>" + proyecto.getId() + "</Id>\n");
-                    writer.write("            <Nombre>" + proyecto.getNombre() + "</Nombre>\n");
-                    writer.write("            <Presupuesto>" + proyecto.getPresupuesto() + "</Presupuesto>\n");
-                    writer.write("        </Proyecto>\n");
-                }
+                    Element proyectoElement = document.createElement("Proyecto");
+                    empleadoElement.appendChild(proyectoElement);
 
-                writer.write("    </Empleado>\n");
+                    Element idElement = document.createElement("Id");
+                    idElement.appendChild(document.createTextNode(proyecto.getId()));
+                    proyectoElement.appendChild(idElement);
+
+                    Element nombreProyectoElement = document.createElement("Nombre");
+                    nombreProyectoElement.appendChild(document.createTextNode(proyecto.getNombre()));
+                    proyectoElement.appendChild(nombreProyectoElement);
+
+                    Element presupuestoElement = document.createElement("Presupuesto");
+                    presupuestoElement.appendChild(document.createTextNode(proyecto.getPresupuesto()));
+                    proyectoElement.appendChild(presupuestoElement);
+                }
             }
 
-            writer.write("</Empleados>\n");
+            // Paso 4: Crea un objeto Transformer para serializar el documento
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+
+            // Paso 5: Configura la salida para dar formato al XML
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+
+            // Paso 6: Crea un objeto DOMSource con el documento
+            DOMSource source = new DOMSource(document);
+
+            // Paso 7: Crea un objeto StreamResult para especificar el destino de salida
+            StreamResult result = new StreamResult(nombreArchivo);
+
+            // Paso 8: Serializa el documento y escribe en el archivo
+            transformer.transform(source, result);
 
             System.out.println("Archivo XML de empleados creado con éxito.");
-        } catch (IOException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     
     public void generarXMLParaProyecto(List<Proyecto> proyectos, String nombreArchivo) {
-        try (FileWriter writer = new FileWriter(nombreArchivo)) {
-            // Inicio del documento XML
-            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-            writer.write("<Proyectos>\n");
+        try {
+            // Paso 1: Obtén una instancia de DocumentBuilderFactory
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
 
-            // Itera sobre la lista de empleados
+            // Paso 2: Crea un nuevo documento XML
+            Document document = builder.newDocument();
+
+            // Paso 3: Crea el elemento raíz
+            Element rootElement = document.createElement("Proyectos");
+            document.appendChild(rootElement);
+
+            // Itera sobre la lista de proyectos
             for (Proyecto proyecto : proyectos) {
-                writer.write("    <Proyecto>\n");
-                writer.write("        <Codigo>" + proyecto.getId() + "</Codigo>\n");
-                writer.write("        <Nombre>" + proyecto.getNombre() + "</Nombre>\n");
-                writer.write("        <Presupuesto>" + proyecto.getPresupuesto() + "</Presupuesto>\n");
-                
-                // Itera sobre los proyectos del empleado
+                Element proyectoElement = document.createElement("Proyecto");
+                rootElement.appendChild(proyectoElement);
+
+                Element codigoElement = document.createElement("Codigo");
+                codigoElement.appendChild(document.createTextNode(proyecto.getId()));
+                proyectoElement.appendChild(codigoElement);
+
+                Element nombreElement = document.createElement("Nombre");
+                nombreElement.appendChild(document.createTextNode(proyecto.getNombre()));
+                proyectoElement.appendChild(nombreElement);
+
+                Element presupuestoElement = document.createElement("Presupuesto");
+                presupuestoElement.appendChild(document.createTextNode(proyecto.getPresupuesto()));
+                proyectoElement.appendChild(presupuestoElement);
+
                 for (Empleado empleado : proyecto.getAsignacionesEmpleados()) {
-                    writer.write("        <Empleado>\n");
-                    writer.write("            <DNI>" + empleado.getDNI()+ "</DNI>\n");
-                    writer.write("            <Nombre>" + empleado.getNombre()+ "</Nombre>\n");
-                    writer.write("        </Empleado>\n");
-                }
-                if(!proyecto.getProductoProyecto().getCodigoProductos().isBlank()){
-                    writer.write("        <Producto>\n");
-                    writer.write("            <Codigo>" + proyecto.getProductoProyecto().getCodigoProductos() + "</Codigo>\n");
-                    writer.write("            <Nombre>" + proyecto.getProductoProyecto().getNombreProductos() + "</Nombre>\n");
-                    writer.write("            <Precio>" + proyecto.getProductoProyecto().getPrecio() + "</Precio>\n");
-                    writer.write("        </Producto>\n");
+                    Element empleadoElement = document.createElement("Empleado");
+                    proyectoElement.appendChild(empleadoElement);
+
+                    Element dniElement = document.createElement("DNI");
+                    dniElement.appendChild(document.createTextNode(empleado.getDNI()));
+                    empleadoElement.appendChild(dniElement);
+
+                    Element nombreEmpleadoElement = document.createElement("Nombre");
+                    nombreEmpleadoElement.appendChild(document.createTextNode(empleado.getNombre()));
+                    empleadoElement.appendChild(nombreEmpleadoElement);
                 }
 
-                writer.write("    </Proyecto>\n");
+                if (!proyecto.getProductoProyecto().getCodigoProductos().isBlank()) {
+                    Element productoElement = document.createElement("Producto");
+                    proyectoElement.appendChild(productoElement);
+
+                    Element codigoProductoElement = document.createElement("Codigo");
+                    codigoProductoElement.appendChild(document.createTextNode(proyecto.getProductoProyecto().getCodigoProductos()));
+                    productoElement.appendChild(codigoProductoElement);
+
+                    Element nombreProductoElement = document.createElement("Nombre");
+                    nombreProductoElement.appendChild(document.createTextNode(proyecto.getProductoProyecto().getNombreProductos()));
+                    productoElement.appendChild(nombreProductoElement);
+
+                    Element precioElement = document.createElement("Precio");
+                    precioElement.appendChild(document.createTextNode(proyecto.getProductoProyecto().getPrecio()));
+                    productoElement.appendChild(precioElement);
+                }
             }
 
-            writer.write("</Proyectos>\n");
+            // Paso 4: Crea un objeto Transformer para serializar el documento
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+
+            // Paso 5: Configura la salida para dar formato al XML
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+
+            // Paso 6: Crea un objeto DOMSource con el documento
+            DOMSource source = new DOMSource(document);
+
+            // Paso 7: Crea un objeto StreamResult para especificar el destino de salida
+            StreamResult result = new StreamResult(nombreArchivo);
+
+            // Paso 8: Serializa el documento y escribe en el archivo
+            transformer.transform(source, result);
 
             System.out.println("Archivo XML de Proyectos creado con éxito.");
-        } catch (IOException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     
     public void generarXMLParaProducto(List<Producto> productos, String nombreArchivo) {
-        try (FileWriter writer = new FileWriter(nombreArchivo)) {
-            // Inicio del documento XML
-            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-            writer.write("<Productos>\n");
+        try {
+            // Paso 1: Obtén una instancia de DocumentBuilderFactory
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
 
-            // Itera sobre la lista de empleados
+            // Paso 2: Crea un nuevo documento XML
+            Document document = builder.newDocument();
+
+            // Paso 3: Crea el elemento raíz
+            Element rootElement = document.createElement("Productos");
+            document.appendChild(rootElement);
+
+            // Itera sobre la lista de productos
             for (Producto producto : productos) {
-                writer.write("    <Producto>\n");
-                writer.write("        <Codigo>" + producto.getCodigoProductos()+ "</Codigo>\n");
-                writer.write("        <Nombre>" + producto.getNombreProductos()+ "</Nombre>\n");
-                writer.write("        <Precio>" + producto.getPrecio() + "</Precio>\n");
-                
-                // Itera sobre los proyectos del empleado
+                Element productoElement = document.createElement("Producto");
+                rootElement.appendChild(productoElement);
+
+                Element codigoElement = document.createElement("Codigo");
+                codigoElement.appendChild(document.createTextNode(producto.getCodigoProductos()));
+                productoElement.appendChild(codigoElement);
+
+                Element nombreElement = document.createElement("Nombre");
+                nombreElement.appendChild(document.createTextNode(producto.getNombreProductos()));
+                productoElement.appendChild(nombreElement);
+
+                Element precioElement = document.createElement("Precio");
+                precioElement.appendChild(document.createTextNode(producto.getPrecio()));
+                productoElement.appendChild(precioElement);
+
                 for (Proyecto proyecto : producto.getProyectosProducto()) {
-                    writer.write("        <Proyecto>\n");
-                    writer.write("            <Codigo>" + proyecto.getId()+ "</Codigo>\n");
-                    writer.write("            <Nombre>" + proyecto.getNombre() + "</Nombre>\n");
-                    writer.write("            <Presupuesto>" + proyecto.getPresupuesto() + "</Presupuesto>\n");
-                    writer.write("        </Proyecto>\n");
+                    Element proyectoElement = document.createElement("Proyecto");
+                    productoElement.appendChild(proyectoElement);
+
+                    Element codigoProyectoElement = document.createElement("Codigo");
+                    codigoProyectoElement.appendChild(document.createTextNode(proyecto.getId()));
+                    proyectoElement.appendChild(codigoProyectoElement);
+
+                    Element nombreProyectoElement = document.createElement("Nombre");
+                    nombreProyectoElement.appendChild(document.createTextNode(proyecto.getNombre()));
+                    proyectoElement.appendChild(nombreProyectoElement);
+
+                    Element presupuestoProyectoElement = document.createElement("Presupuesto");
+                    presupuestoProyectoElement.appendChild(document.createTextNode(proyecto.getPresupuesto()));
+                    proyectoElement.appendChild(presupuestoProyectoElement);
                 }
-                if(!producto.getProveedorProducto().getCodigoProveedor().isBlank()){
-                    writer.write("        <Proveedor>\n");
-                    writer.write("            <Codigo>" + producto.getProveedorProducto().getCodigoProveedor()+ "</Codigo>\n");
-                    writer.write("            <Nombre>" + producto.getProveedorProducto().getNombreProveedor() + "</Nombre>\n");
-                    writer.write("        </Proveedor>\n");
+
+                if (!producto.getProveedorProducto().getCodigoProveedor().isBlank()) {
+                    Element proveedorElement = document.createElement("Proveedor");
+                    productoElement.appendChild(proveedorElement);
+
+                    Element codigoProveedorElement = document.createElement("Codigo");
+                    codigoProveedorElement.appendChild(document.createTextNode(producto.getProveedorProducto().getCodigoProveedor()));
+                    proveedorElement.appendChild(codigoProveedorElement);
+
+                    Element nombreProveedorElement = document.createElement("Nombre");
+                    nombreProveedorElement.appendChild(document.createTextNode(producto.getProveedorProducto().getNombreProveedor()));
+                    proveedorElement.appendChild(nombreProveedorElement);
                 }
-                writer.write("    </Producto>\n");
-                
             }
 
-            writer.write("</Productos>\n");
+            // Paso 4: Crea un objeto Transformer para serializar el documento
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+
+            // Paso 5: Configura la salida para dar formato al XML
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+
+            // Paso 6: Crea un objeto DOMSource con el documento
+            DOMSource source = new DOMSource(document);
+
+            // Paso 7: Crea un objeto StreamResult para especificar el destino de salida
+            StreamResult result = new StreamResult(nombreArchivo);
+
+            // Paso 8: Serializa el documento y escribe en el archivo
+            transformer.transform(source, result);
 
             System.out.println("Archivo XML de Productos creado con éxito.");
-        } catch (IOException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     
     public void generarXMLParaProveedor(List<Proveedor> proveedores, String nombreArchivo) {
-        try (FileWriter writer = new FileWriter(nombreArchivo)) {
-            // Inicio del documento XML
-            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-            writer.write("<Proveedores>\n");
+        try {
+            // Paso 1: Obtén una instancia de DocumentBuilderFactory
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
 
-            // Itera sobre la lista de empleados
+            // Paso 2: Crea un nuevo documento XML
+            Document document = builder.newDocument();
+
+            // Paso 3: Crea el elemento raíz
+            Element rootElement = document.createElement("Proveedores");
+            document.appendChild(rootElement);
+
+            // Itera sobre la lista de proveedores
             for (Proveedor proveedor : proveedores) {
-                writer.write("    <Proveedor>\n");
-                writer.write("        <Codigo>" + proveedor.getCodigoProveedor()+ "</Codigo>\n");
-                writer.write("        <Nombre>" + proveedor.getNombreProveedor() + "</Nombre>\n");
-                
-                // Itera sobre los proyectos del empleado
-                if(!proveedor.getProductoProveedor().getCodigoProductos().isBlank()) {
-                    writer.write("        <Producto>\n");
-                    writer.write("            <Codigo>" + proveedor.getProductoProveedor().getCodigoProductos() + "</Codigo>\n");
-                    writer.write("            <Nombre>" + proveedor.getProductoProveedor().getNombreProductos() + "</Nombre>\n");
-                    writer.write("            <Presupuesto>" + proveedor.getProductoProveedor().getPrecio() + "</Presupuesto>\n");
-                    writer.write("        </Producto>\n");
+                Element proveedorElement = document.createElement("Proveedor");
+                rootElement.appendChild(proveedorElement);
+
+                Element codigoElement = document.createElement("Codigo");
+                codigoElement.appendChild(document.createTextNode(proveedor.getCodigoProveedor()));
+                proveedorElement.appendChild(codigoElement);
+
+                Element nombreElement = document.createElement("Nombre");
+                nombreElement.appendChild(document.createTextNode(proveedor.getNombreProveedor()));
+                proveedorElement.appendChild(nombreElement);
+
+                if (!proveedor.getProductoProveedor().getCodigoProductos().isBlank()) {
+                    Element productoElement = document.createElement("Producto");
+                    proveedorElement.appendChild(productoElement);
+
+                    Element codigoProductoElement = document.createElement("Codigo");
+                    codigoProductoElement.appendChild(document.createTextNode(proveedor.getProductoProveedor().getCodigoProductos()));
+                    productoElement.appendChild(codigoProductoElement);
+
+                    Element nombreProductoElement = document.createElement("Nombre");
+                    nombreProductoElement.appendChild(document.createTextNode(proveedor.getProductoProveedor().getNombreProductos()));
+                    productoElement.appendChild(nombreProductoElement);
+
+                    Element presupuestoProductoElement = document.createElement("Presupuesto");
+                    presupuestoProductoElement.appendChild(document.createTextNode(proveedor.getProductoProveedor().getPrecio()));
+                    productoElement.appendChild(presupuestoProductoElement);
                 }
-                writer.write("    </Proveedor>\n");
-                
             }
-            writer.write("</Proveedores>\n");
-            
+
+            // Paso 4: Crea un objeto Transformer para serializar el documento
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+
+            // Paso 5: Configura la salida para dar formato al XML
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+
+            // Paso 6: Crea un objeto DOMSource con el documento
+            DOMSource source = new DOMSource(document);
+
+            // Paso 7: Crea un objeto StreamResult para especificar el destino de salida
+            StreamResult result = new StreamResult(nombreArchivo);
+
+            // Paso 8: Serializa el documento y escribe en el archivo
+            transformer.transform(source, result);
+
             System.out.println("Archivo XML de Proveedores creado con éxito.");
-        } catch (IOException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     

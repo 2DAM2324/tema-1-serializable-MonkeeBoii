@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Productos>
     <Producto>
         <Codigo>3</Codigo>
@@ -9,5 +9,14 @@
             <Nombre>21</Nombre>
             <Presupuesto>12</Presupuesto>
         </Proyecto>
+    </Producto>
+    <Producto>
+        <Codigo>4</Codigo>
+        <Nombre>4</Nombre>
+        <Precio>4</Precio>
+        <Proveedor>
+            <Codigo>5</Codigo>
+            <Nombre>4</Nombre>
+        </Proveedor>
     </Producto>
 </Productos>

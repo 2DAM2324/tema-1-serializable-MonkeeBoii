@@ -1396,7 +1396,7 @@ public class Ventana1 extends javax.swing.JFrame {
         col1 = jTextField_codigo_Proveedor.getText();
         col2 = jTextField_Nombre_proveedor.getText();
         
-        pasaFiltro1 = generador.comprobarSiElObjetoYaExisteProducto(productos, col1);
+        pasaFiltro1 = generador.comprobarSiElObjetoYaExisteProveedor(proveedor, col1);
         pasaFiltro2 = generador.tieneAlgunAtributoVacio(col1, col2, null);
         
         if(pasaFiltro1 && pasaFiltro2){

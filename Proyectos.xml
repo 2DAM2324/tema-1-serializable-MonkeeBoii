@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Proyectos>
     <Proyecto>
         <Codigo>1</Codigo>
@@ -8,10 +8,19 @@
             <DNI>2</DNI>
             <Nombre>222</Nombre>
         </Empleado>
+        <Empleado>
+            <DNI>1</DNI>
+            <Nombre>1</Nombre>
+        </Empleado>
         <Producto>
             <Codigo>3</Codigo>
             <Nombre>3</Nombre>
             <Precio>3</Precio>
         </Producto>
+    </Proyecto>
+    <Proyecto>
+        <Codigo>4</Codigo>
+        <Nombre>4</Nombre>
+        <Presupuesto>4</Presupuesto>
     </Proyecto>
 </Proyectos>

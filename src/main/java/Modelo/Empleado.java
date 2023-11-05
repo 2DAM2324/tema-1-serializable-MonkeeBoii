@@ -48,15 +48,15 @@ public class Empleado {
     }
     
     public void eliminarProyecto(Proyecto a, Empleado b) {
-    List<Proyecto> proyectosAsignados = b.getProyectosAsignados();
-    Iterator<Proyecto> iterator = proyectosAsignados.iterator();
+        List<Proyecto> proyectosAsignados = b.getProyectosAsignados();
+        Iterator<Proyecto> iterator = proyectosAsignados.iterator();
 
-    while (iterator.hasNext()) {
-        Proyecto pro = iterator.next();
-        if (pro.getId().equals(a.getId())) {
-            iterator.remove(); // Usar el iterator para eliminar el elemento
+        while (iterator.hasNext()) {
+            Proyecto pro = iterator.next();
+            if (pro.getId().equals(a.getId())) {
+                iterator.remove(); // Usar el iterator para eliminar el elemento
+            }
         }
     }
-}
 
 }
